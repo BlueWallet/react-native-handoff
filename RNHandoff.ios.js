@@ -1,32 +1,28 @@
-import { PureComponent } from 'react'
+import { PureComponent } from 'react';
 import { NativeModules } from 'react-native'
 
-const { RNHandoff } = NativeModules
+const { RNHandoff } = NativeModules;
+
+let id = 0;
 
 export default class Handoff extends PureComponent {
-  state = {
-    active: false,
-    id: 'react-native-handoff',
-  }
+    id = -1;
 
-  componentDidMount() {
-    const { type, title, url } = this.props
-    const { id } = this.state
+    componentWillMount() {
+        const { type, title, url } = this.props;
 
-    RNHandoff.becomeCurrent(id, type, title, url)
+        this.id = ++id;
 
-    this.setState({ active: true })
-  }
-
-  componentWillUnmount() {
-    const { active, id } = this.state
-
-    if (active) {
-      RNHandoff.invalidate(id)
+        RNHandoff.becomeCurrent(this.id, type, title, url);
     }
-  }
 
-  render() {
-    return null
-  }
+    componentWillUnmount() {
+        if (this.id !== -1) {
+            RNHandoff.invalidate(this.id);
+        }
+    }
+
+    render() {
+        return null;
+    }
 }
