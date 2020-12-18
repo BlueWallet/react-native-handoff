@@ -8,7 +8,7 @@ let id = 0;
 export default class Handoff extends PureComponent {
     id = -1;
 
-    componentWillMount() {
+    componentDidMount() {
         const { type, title, url } = this.props;
 
         this.id = ++id;
