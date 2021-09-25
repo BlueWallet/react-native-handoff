@@ -12,12 +12,16 @@ NSMutableArray *activities = nil;
     return activities;
 }
 
-RCT_EXPORT_METHOD(becomeCurrent:(NSNumber * _Nonnull)activityId type:(NSString *)type title:(NSString *)title userInfo:(NSDictionary *)userInfo)
+RCT_EXPORT_METHOD(becomeCurrent:(NSNumber * _Nonnull)activityId type:(NSString *)type title:(NSString *)title userInfo:(NSDictionary *)userInfo url:(NSString *)url)
 {
     NSUserActivity* activity = [[NSUserActivity alloc] initWithActivityType:type];
     activity.title = title;
-    activity.userInfo = userInfo;
     activity.eligibleForHandoff = YES;
+    if(!([[url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0)) {
+        activity.webpageURL = [NSURL URLWithString:url];
+    } else {
+        activity.userInfo = userInfo;
+    }
     [activity becomeCurrent];
     
     [[self activityList] addObject:@{ @"id": activityId, @"activity": activity }];
