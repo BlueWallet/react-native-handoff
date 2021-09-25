@@ -9,11 +9,11 @@ export default class Handoff extends PureComponent {
     id = -1;
 
     componentDidMount() {
-        const { type, title, url } = this.props;
+        const { type, title, userInfo } = this.props;
 
         this.id = ++id;
 
-        RNHandoff.becomeCurrent(this.id, type, title, url);
+        RNHandoff.becomeCurrent(this.id, type, title, userInfo);
     }
 
     componentWillUnmount() {
